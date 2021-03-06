@@ -6,7 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.views.generic import CreateView
 
-from .models import Customer, Category, Product, Order, OrderItem, ProductOpinion
+from .models import Customer, Category, Product, Order, OrderItem, ProductOpinion, MetaProduct
 from .forms import ProductOpinionForm
 
 
@@ -20,8 +20,10 @@ def store(request):
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
         cart_items = order['get_cart_items']
+    categories = Category.objects.all()
+    meta_products = MetaProduct.objects.all()
     products = Product.objects.all()
-    context = {'products': products, 'cart_items': cart_items}
+    context = {'categories': categories, 'meta_products': meta_products, 'products': products, 'cart_items': cart_items}
     return render(request, 'store.html', context)
 
 
@@ -35,6 +37,7 @@ def cart(request):
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0}
         cart_items = order['get_cart_items']
+
     context = {'items': items, 'order': order, 'cart_items': cart_items}
     return render(request, 'cart.html', context)
 
@@ -49,7 +52,6 @@ def checkout(request):
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
         cart_items = order['get_cart_items']
-
     context = {'items': items, 'order': order, 'cart_items': cart_items}
     return render(request, 'checkout.html', context)
 
