@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db.models import BooleanField, CASCADE, CharField, DateTimeField, DecimalField, \
     F, FloatField, ForeignKey, ImageField, \
-    IntegerField, Model, OneToOneField, SET_NULL, TextField
+    IntegerField, Model, OneToOneField, SET_NULL, TextField, ManyToOneRel
 
 
 class Customer(Model):
@@ -47,16 +47,14 @@ class Product(Model):
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
 
-    name = CharField(max_length=70)
+    name = CharField(max_length=7, unique=True)
     category = ForeignKey(Category, on_delete=SET_NULL, null=True, blank=True)
-    measure = IntegerField(verbose_name='Kind of measure', choices=MEASURE_TYPE)
-    package = IntegerField(verbose_name='Package size', choices=PACKAGE_SIZE)
     description = TextField(max_length=700, null=False, blank=False)
-    price = DecimalField(max_digits=6, decimal_places=2)
     availability = IntegerField(null=False, blank=False)
-    weight = FloatField(null=True, blank=True)
+    #weight = FloatField(null=True, blank=True)
     digital = BooleanField(default=False, null=True, blank=True)
     image = ImageField(null=True, blank=True)
+    # product_package = ForeignKey.one_to_many(ProductPackage, on_delete=CASCADE)  ProductPackage musi być wyżej
 
     def __str__(self):
         return self.name
@@ -68,6 +66,19 @@ class Product(Model):
         else:
             url = ''
         return url
+
+
+class ProductPackage(Model):
+    #product = ForeignKey.many_to_one(Product, on_delete=SET_NULL) -- 2 opcja
+    product = ForeignKey(to=Product, on_delete=SET_NULL)
+    measure = IntegerField(verbose_name='Kind of measure', choices=MEASURE_TYPE)
+    package = IntegerField(verbose_name='Package size', choices=PACKAGE_SIZE)
+    price = DecimalField(max_digits=6, decimal_places=2)
+
+    @property
+    def get_availability(self):
+        availability = self.product.availability / self.package
+        return availability
 
 
 class Order(Model):
