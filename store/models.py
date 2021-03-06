@@ -84,6 +84,15 @@ class Product(Model):
         availability = self.meta_product.availability / self.package
         return availability
 
+    @property
+    def imageURL(self):
+        image = self.meta_product.image
+        if image:
+            url = self.meta_product.image.url
+        else:
+            url = ''
+        return url
+
 
 class Order(Model):
     class Meta:
