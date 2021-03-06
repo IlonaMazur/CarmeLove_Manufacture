@@ -3,7 +3,7 @@ import datetime
 from django.shortcuts import render
 from django.http import JsonResponse
 
-from .models import Customer, Category, Product, Order, OrderItem
+from .models import Customer, Category, Product, Order, OrderItem, MetaProduct
 
 
 def store(request):
@@ -16,8 +16,10 @@ def store(request):
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
         cart_items = order['get_cart_items']
+    categories = Category.objects.all()
+    meta_products = MetaProduct.objects.all()
     products = Product.objects.all()
-    context = {'products': products, 'cart_items': cart_items}
+    context = {'categories': categories, 'meta_products': meta_products, 'products': products, 'cart_items': cart_items}
     return render(request, 'store.html', context)
 
 
@@ -31,6 +33,7 @@ def cart(request):
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0}
         cart_items = order['get_cart_items']
+
     context = {'items': items, 'order': order, 'cart_items': cart_items}
     return render(request, 'cart.html', context)
 
@@ -44,7 +47,6 @@ def checkout(request):
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
         cart_items = order['get_cart_items']
-
     context = {'items': items, 'order': order, 'cart_items': cart_items}
     return render(request, 'checkout.html', context)
 

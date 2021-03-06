@@ -42,19 +42,17 @@ PACKAGE_SIZE = (
 )
 
 
-class Product(Model):
+class MetaProduct(Model):
     class Meta:
-        verbose_name = 'Product'
-        verbose_name_plural = 'Products'
+        verbose_name = 'Meta Product'
+        verbose_name_plural = 'Meta Products'
 
-    name = CharField(max_length=7, unique=True)
+    name = CharField(max_length=70, unique=True)
     category = ForeignKey(Category, on_delete=SET_NULL, null=True, blank=True)
     description = TextField(max_length=700, null=False, blank=False)
     availability = IntegerField(null=False, blank=False)
-    #weight = FloatField(null=True, blank=True)
     digital = BooleanField(default=False, null=True, blank=True)
     image = ImageField(null=True, blank=True)
-    # product_package = ForeignKey.one_to_many(ProductPackage, on_delete=CASCADE)  ProductPackage musi być wyżej
 
     def __str__(self):
         return self.name
@@ -68,16 +66,22 @@ class Product(Model):
         return url
 
 
-class ProductPackage(Model):
-    #product = ForeignKey.many_to_one(Product, on_delete=SET_NULL) -- 2 opcja
-    product = ForeignKey(to=Product, on_delete=SET_NULL)
+class Product(Model):
+    class Meta:
+        verbose_name = 'Product'
+        verbose_name_plural = 'Products'
+
+    meta_product = ForeignKey(MetaProduct, on_delete=CASCADE)
     measure = IntegerField(verbose_name='Kind of measure', choices=MEASURE_TYPE)
     package = IntegerField(verbose_name='Package size', choices=PACKAGE_SIZE)
     price = DecimalField(max_digits=6, decimal_places=2)
 
+    def __str__(self):
+        return self.meta_product.name
+
     @property
-    def get_availability(self):
-        availability = self.product.availability / self.package
+    def availability(self):
+        availability = self.meta_product.availability / self.package
         return availability
 
 
@@ -89,16 +93,10 @@ class Order(Model):
     customer = ForeignKey(Customer, on_delete=SET_NULL, null=True, blank=True)
     date_ordered = DateTimeField(auto_now_add=True)
     complete = BooleanField(default=False, null=True, blank=False)
-    transaction_id = IntegerField()
+    transaction_id = CharField(max_length=100, null=True)
 
     def __str__(self):
         return str(self.id)
-
-    @property
-    def transaction_counter(self):
-        transaction_id = Order.objects.all()
-        transaction_id.update(stories_filed=F('stories_filed') + 1)
-        return transaction_id
 
     @property
     def shipping(self):
@@ -127,6 +125,9 @@ class OrderItem(Model):
     order = ForeignKey(Order, on_delete=SET_NULL, null=True, blank=True)
     quantity = IntegerField(default=0, null=True, blank=True)
     date_added = DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id)
 
     @property
     def get_total(self):
