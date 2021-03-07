@@ -5,24 +5,41 @@
     <h3>Order History</h3>
     <hr>
     {% if user_orders %}
-        {% if user_order.complete is FALSE %}
-            <p>You have no completed orders</p>
-        {% else %}
+
             {% for user_order in user_orders %}
-                <p>Order no: {{ user_order }}</p>
+                <p>Order no: {{ user_order.id }}</p>
                 <hr>
-                {% for history_item in history_items %}
-                <div><img src="{{ history_item.product.imageURL }}"></div>
-                <div>Name: {{ history_item.product.name }}</div>
-                <div>Price: {{ history_item.product.price|floatformat:2 }}</div>
-                <div>Quantity: x{{ history_item.quantity }}</div>
-                <div>Total price for product: {{ history_item.get_total|floatformat:2 }}</div>
-                <p>Total price for order: {{ user_order.get_cart_total|floatformat:2 }}</p>
-                <p>Products in order: {{ user_order.get_cart_items }}</p>
-                <hr>
-                {% endfor %}
+<!--                {% for user_order in user_orders %}-->
+<!--                    <div>{{ user_order.get_orderitems }}</div>-->
+<!--                    {% for user_order.get_orderitem in user_order.get_orderitems %}</div>-->
+<!--                        <div><img src="{{ user_order.get_orderitem.imageURL }}"></div>-->
+<!--                        <div>Name: {{ user_order.product.name }}</div>-->
+<!--                        <div>Price: {{ user_order.get_orderitem.product.price|floatformat:2 }}</div>-->
+<!--                        <div>Quantity: x{{ user_order.get_orderitem.quantity }}</div>-->
+<!--                        <div>Total price for product: {{ user_order.item.get_total|floatformat:2 }}</div>-->
+<!--                    {% endfor %}-->
+<!--                    <p>Total price for order: {{ user_order.get_cart_total|floatformat:2 }}</p>-->
+<!--                    <p>Products in order: {{ user_order.get_cart_items }}</p>-->
+
+
+<!--                    <hr>-->
+<!--                {% endfor %}-->
+
+<!--                <div>{{ history_items }}</div>-->
+                    {% for history_item in history_items %}</div>
+                        <div><img src="{{ history_item.product.imageURL }}"></div>
+                        <div>Name: {{ history_item.product.name }}</div>
+                        <div>Price: {{ history_item.product.price|floatformat:2 }}</div>
+                        <div>Quantity: x{{ history_item.quantity }}</div>
+                        <div>Total price for product: {{ history_item.get_total|floatformat:2 }}</div>
+                    {% endfor %}
+                    <p>Total price for order: {{ user_order.get_cart_total|floatformat:2 }}</p>
+                    <p>Products in order: {{ user_order.get_cart_items }}</p>
+
+
+                    <hr>
+
             {% endfor %}
-        {% endif %}
     {% else %}
         <p>You have no orders</p>
     {% endif %}

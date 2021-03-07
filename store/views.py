@@ -175,15 +175,22 @@ def order_history(request):
         # order, created = Order.objects.get_or_create(customer=customer, complete=False)
         # items = order.orderitem_set.all()
         # cart_items = order.get_cart_items
-        user_orders = Order.objects.filter(customer=customer).all()
+        user_orders = Order.objects.filter(customer=customer, complete=True)
+        for user_order in user_orders:
+            history_items = user_order.get_orderitems
+
+        #completed = user_orders.objects.filter(complete=True)
         #user_orders = user_all_orders.objects.filter(complete=True).all()
+        # user_order = [print(user_order) for user_order in user_orders]
+        #history_items = user_orders.orderitems_set.all()
 
         # for user_order in user_orders:
         #     if user_order.complete is True:
         #         history_items = user_order.orderitem_set.all()
+        #for item in history_items:
 
-        context = {'user_orders': user_orders}
-                   # 'history_items': history_items}
+        context = {'user_orders': user_orders,
+                   'history_items': history_items}
         return render(request, 'order_history.html', context)
 
         # context = {'items': items,

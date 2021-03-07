@@ -109,6 +109,11 @@ class Order(Model):
     complete = BooleanField(default=False, null=True, blank=False)
 
     @property
+    def get_orderitems(self):
+        orderitems = self.orderitem_set.all()
+        return orderitems
+
+    @property
     def shipping(self):
         shipping = False
         orderitems = self.orderitem_set.all()
@@ -167,7 +172,7 @@ class OrderComment(Model):
     comment = CharField(max_length=400, null=True, blank=True)
 
     def __str__(self):
-        return self.comment
+        return str(self.id)
 
 
 class ProductOpinion(Model):
