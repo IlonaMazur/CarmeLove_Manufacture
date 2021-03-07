@@ -172,20 +172,33 @@ def meta_product(request, meta_product_id):
 def order_history(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        items = order.orderitem_set.all()
-        cart_items = order.get_cart_items
+        # order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        # items = order.orderitem_set.all()
+        # cart_items = order.get_cart_items
         user_orders = Order.objects.filter(customer=customer).all()
-        for user_order in user_orders:
-            history_items = user_order.orderitem_set.all()
-    else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-        cart_items = order['get_cart_items']
-        user_orders = None
-        history_order_items = None
+        #user_orders = user_all_orders.objects.filter(complete=True).all()
 
-    context = {'user_orders': user_orders, 'history_items': history_items,
-               'items': items, 'order': order, 'cart_items': cart_items}
-    return render(request, 'order_history.html', context)
+        # for user_order in user_orders:
+        #     if user_order.complete is True:
+        #         history_items = user_order.orderitem_set.all()
+
+        context = {'user_orders': user_orders}
+                   # 'history_items': history_items}
+        return render(request, 'order_history.html', context)
+
+        # context = {'items': items,
+        #            'user_orders': user_orders,
+        #            'history_items': history_items,
+        #            'cart_items': cart_items}
+    # else:
+    #     items = []
+    #     order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
+    #     cart_items = order['get_cart_items']
+    #     user_orders = None
+    #     history_items = None
+    # history_items = [user_order.orderitem_set.all() for user_order in user_orders]
+
+               # 'items': items, 'order': order, 'cart_items': cart_items}
+    # context = {'user_orders': user_orders, 'history_items': history_items}
+    # return render(request, 'order_history.html', context)
 

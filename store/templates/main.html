@@ -7,6 +7,13 @@
 
 </head>
 <body>
+
+    <div>
+        <a href="{% url 'cart' %}">Cart</a>
+        <a href="{% url 'checkout' %}">Checkout</a>
+        <a href="{% url 'order_history' %}">Order History</a>
+    </div>
+
     <div>
         {% for category in categories %}
             <strong><a href="{% url 'category' category.id %}">{{ category.name }}</a></strong>
