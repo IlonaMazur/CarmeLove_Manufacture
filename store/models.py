@@ -157,6 +157,18 @@ class ShippingAddress(Model):
         return self.address
 
 
+class OrderComment(Model):
+    class Meta:
+        verbose_name = 'Order Comment'
+        verbose_name_plural = 'Orders Comments'
+
+    order = ForeignKey(Order, on_delete=CASCADE, null=True, blank=True)
+    comment = CharField(max_length=400, null=True, blank=True)
+
+    def __str__(self):
+        return self.comment
+
+
 class ProductOpinion(Model):
     product = ForeignKey(Product, on_delete=SET_NULL, null=True, blank=True)
     customer = ForeignKey(Customer, on_delete=SET_NULL, null=True, blank=True)
