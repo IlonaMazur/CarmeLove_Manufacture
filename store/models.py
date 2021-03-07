@@ -80,6 +80,11 @@ class Product(Model):
         return self.meta_product.name
 
     @property
+    def name(self):
+        name = self.meta_product.name
+        return name
+
+    @property
     def availability(self):
         availability = self.meta_product.availability / self.package
         return availability

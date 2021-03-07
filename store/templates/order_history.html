@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div>
+    <h3>Order History</h3>
+    <hr>
+    {% if user_orders %}
+        {% for user_order in user_orders %}
+            <p>Order no: {{ user_order }}</p>
+            <hr>
+            {% for history_item in history_items %}
+            <div><img src="{{ history_item.product.imageURL }}"></div>
+            <div>Name: {{ history_item.product.name }}</div>
+            <div>Price: {{ history_item.product.price|floatformat:2 }}</div>
+            <div>Quantity: x{{ history_item.quantity }}</div>
+            <div>Total price for product: {{ history_item.get_total|floatformat:2 }}</div>
+            <p>Total price for order: {{ user_order.get_cart_total|floatformat:2 }}</p>
+            <p>Products in order: {{ user_order.get_cart_items }}</p>
+            <hr>
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p>You have no orders</p>
+    {% endif %}
+</div>
+
+{% endblock content %}
+
