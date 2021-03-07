@@ -106,6 +106,7 @@ def process_order(request):
 
 
 def meta_product(request, meta_product_id):
+    categories = Category.objects.all()
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -123,7 +124,8 @@ def meta_product(request, meta_product_id):
                 new_opinion.product = viewed_meta_product
                 new_opinion.save()
                 user_new_opinion = new_opinion
-                context = {'meta_product': viewed_meta_product,
+                context = {'categories': categories,
+                           'meta_product': viewed_meta_product,
                            'products': products,
                            'form': form,
                            'user_new_opinion': user_new_opinion,
@@ -138,10 +140,12 @@ def meta_product(request, meta_product_id):
         # maybe JS or/and CSS will help?
         form = None
 
+    categories = Category.objects.all()
     viewed_meta_product = MetaProduct.objects.get(id=meta_product_id)
     products = viewed_meta_product.product_set.all()
     opinions = ProductOpinion.objects.filter(product=viewed_meta_product)
-    context = {'meta_product': viewed_meta_product,
+    context = {'categories': categories,
+               'meta_product': viewed_meta_product,
                'products': products,
                'form': form,
                'opinions': opinions,
