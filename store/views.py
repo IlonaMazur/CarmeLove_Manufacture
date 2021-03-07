@@ -22,8 +22,8 @@ def store(request):
         cart_items = order['get_cart_items']
     categories = Category.objects.all()
     meta_products = MetaProduct.objects.all()
-    products = Product.objects.all()
-    context = {'categories': categories, 'meta_products': meta_products, 'products': products, 'cart_items': cart_items}
+    # products = Product.objects.all()
+    context = {'categories': categories, 'meta_products': meta_products, 'cart_items': cart_items}   #'products': products,
     return render(request, 'store.html', context)
 
 
@@ -70,29 +70,31 @@ def process_order(request):
     return JsonResponse('Payment submitted...', safe=False)
 
 
-def product(request, product_id):
+def meta_product(request, meta_product_id):
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cart_items = order.get_cart_items
         form = ProductOpinionForm()
-        viewed_product = Product.objects.get(id=product_id)
-        opinions = ProductOpinion.objects.filter(product=viewed_product)
+        viewed_meta_product = MetaProduct.objects.get(id=meta_product_id)
+        products = viewed_meta_product.product_set.all()
+        opinions = ProductOpinion.objects.filter(product=viewed_meta_product)
         if request.method == 'POST':
             form = ProductOpinionForm(request.POST)
             if form.is_valid():
                 new_opinion = form.save(commit=False)
                 new_opinion.customer = request.user.customer
-                new_opinion.product = viewed_product
+                new_opinion.product = viewed_meta_product
                 new_opinion.save()
                 user_new_opinion = new_opinion
-                context = {'product': viewed_product,
+                context = {'meta_product': viewed_meta_product,
+                           'products': products,
                            'form': form,
                            'user_new_opinion': user_new_opinion,
                            'opinions': opinions,
                            'cart_items': cart_items}
-                return render(request, 'product.html', context)
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
@@ -101,13 +103,50 @@ def product(request, product_id):
         # maybe JS or/and CSS will help?
         form = None
 
-    viewed_product = Product.objects.get(id=product_id)
-    opinions = ProductOpinion.objects.filter(product=viewed_product)
-    context = {'product': viewed_product, 'form': form, 'opinions': opinions, 'cart_items': cart_items}
-    return render(request, 'product.html', context)
+    viewed_meta_product = MetaProduct.objects.get(id=meta_product_id)
+    products = viewed_meta_product.product_set.all()
+    opinions = ProductOpinion.objects.filter(product=viewed_meta_product)
+    context = {'meta_product': viewed_meta_product,
+               'products': products,
+               'form': form,
+               'opinions': opinions,
+               'cart_items': cart_items}
+    return render(request, 'meta_product.html', context)
 
 
-class ProductOpinionCreateView(CreateView):
-    template_name = 'product.html'
-    form_class = ProductOpinionForm
-    success_url = reverse_lazy('product')
+# def product(request, product_id):
+#     if request.user.is_authenticated:
+#         customer = request.user.customer
+#         order, created = Order.objects.get_or_create(customer=customer, complete=False)
+#         items = order.orderitem_set.all()
+#         cart_items = order.get_cart_items
+#         form = ProductOpinionForm()
+#         viewed_product = Product.objects.get(id=product_id)
+#         opinions = ProductOpinion.objects.filter(product=viewed_product)
+#         if request.method == 'POST':
+#             form = ProductOpinionForm(request.POST)
+#             if form.is_valid():
+#                 new_opinion = form.save(commit=False)
+#                 new_opinion.customer = request.user.customer
+#                 new_opinion.product = viewed_product
+#                 new_opinion.save()
+#                 user_new_opinion = new_opinion
+#                 context = {'product': viewed_product,
+#                            'form': form,
+#                            'user_new_opinion': user_new_opinion,
+#                            'opinions': opinions,
+#                            'cart_items': cart_items}
+#                 return render(request, 'product.html', context)
+#     else:
+#         items = []
+#         order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
+#         cart_items = order['get_cart_items']
+#         # for now it's the only idea I have, it's working, but view is too fat.
+#         # maybe JS or/and CSS will help?
+#         form = None
+#
+#     viewed_product = Product.objects.get(id=product_id)
+#     opinions = ProductOpinion.objects.filter(product=viewed_product)
+#     context = {'product': viewed_product, 'form': form, 'opinions': opinions, 'cart_items': cart_items}
+#     return render(request, 'product.html', context)
+

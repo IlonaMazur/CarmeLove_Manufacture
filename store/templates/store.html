@@ -14,8 +14,7 @@
         <div>
             <strong>{{ meta_product.name }}</strong>
             <p>category: {{ meta_product.category }}</p>
-          <!--linia 18 wymaga poprawek -->
-           <!-- <a href="{% url 'product' product.id %}">More...</a> -->
+            <a href="{% url 'meta_product' meta_product.id %}">More...</a>
             <hr>
         </div>
         {% endfor %}

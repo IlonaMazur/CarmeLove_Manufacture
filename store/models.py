@@ -158,7 +158,7 @@ class ShippingAddress(Model):
 
 
 class ProductOpinion(Model):
-    product = ForeignKey(Product, on_delete=SET_NULL, null=True, blank=True)
+    product = ForeignKey(MetaProduct, on_delete=SET_NULL, null=True, blank=True)
     customer = ForeignKey(Customer, on_delete=SET_NULL, null=True, blank=True)
     rating = IntegerField(null=True, blank=True)
     title = TextField(max_length=250, null=True, blank=True)
