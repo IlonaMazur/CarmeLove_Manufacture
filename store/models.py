@@ -162,7 +162,7 @@ class OrderComment(Model):
         verbose_name = 'Order Comment'
         verbose_name_plural = 'Orders Comments'
 
-    order = ForeignKey(Order, on_delete=CASCADE, null=True, blank=True)
+    order = OneToOneField(Order, on_delete=CASCADE, null=True, blank=True)
     comment = CharField(max_length=400, null=True, blank=True)
 
     def __str__(self):
