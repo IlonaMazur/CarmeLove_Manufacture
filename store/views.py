@@ -20,8 +20,9 @@ def home(request):
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
         cart_items = order['get_cart_items']
+    categories = Category.objects.all()
     about = 'Hi! We are small Manufacture of Sweets!'
-    context = {'cart_items': cart_items, 'about': about}
+    context = {'categories': categories, 'cart_items': cart_items, 'about': about}
     return render(request, 'home.html', context)
 
 
