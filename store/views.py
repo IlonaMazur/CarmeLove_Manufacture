@@ -48,23 +48,11 @@ def checkout(request):
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cart_items = order.get_cart_items
-        # current_order = Order.objects.filter(order=order)
-        # order_comment = OrderComment.objects.filter(order=current_order)
-        # form = OrderCommentForm()
-        # if request.method == 'POST':
-        #     form = OrderCommentForm(request.POST)
-        #     if form.is_valid():
-        #         new_order_comment = form.save(commit=False)
-        #         new_order_comment.order = order
-        #         new_order_comment.save()
-        #         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
     else:
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
         cart_items = order['get_cart_items']
-        order_comment = None
-        form = None
+        
     form = OrderCommentForm()
     if request.method == 'POST':
         form = OrderCommentForm(request.POST)
@@ -74,16 +62,12 @@ def checkout(request):
             new_order_comment.save()
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    # current_order = Order.objects.get(id=order.id)
-    # order_comment = OrderComment.objects.filter(order=current_order)
-    #         # context = {'new_order_comment': new_order_comment,
-    #         #            'items': items, 'order': order,
-    #         #            'cart_items': cart_items, 'form': form}
-    #         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    current_order = Order.objects.get(id=order.id)
+    order_comment = OrderComment.objects.filter(order=current_order)
 
-    # current_order = Order.objects.filter(id=order.id)
-    # order_comment = OrderComment.objects.filter(order=current_order)
-    context = {'items': items, 'order': order, 'cart_items': cart_items, 'form': form, 'order_comment': order_comment}
+    context = {'items': items, 'order': order,
+               'cart_items': cart_items,
+               'form': form, 'order_comment': order_comment}
     return render(request, 'checkout.html', context)
 
 
