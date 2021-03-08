@@ -108,6 +108,14 @@ class Order(Model):
     date_ordered = DateTimeField(auto_now_add=True)
     complete = BooleanField(default=False, null=True, blank=False)
 
+    def __str__(self):
+        return str(self.id)
+
+    @property
+    def get_order_no(self):
+        order_no = self.id
+        return order_no
+
     @property
     def get_orderitems(self):
         orderitems = self.orderitem_set.all()
@@ -142,7 +150,13 @@ class OrderItem(Model):
     date_added = DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.id)
+        return self.product.name
+
+    @property
+    def get_history_items(self):
+        if self.order.complete is True:
+            m_history_items = self.order.orderitems_set.all()
+        return m_history_items
 
     @property
     def get_total(self):
