@@ -4,12 +4,16 @@
     <div>
         {{ customer }}
         <hr>
-        <div>
-            {% for user_order in user_orders %}
-            <p>No: {{ forloop.counter }} - Order no:{{ user_order.id }}</p>
-            <a href="{% url 'order_history' user_order.id %}">Order Details</a>
-            <hr>
-            {% endfor %}
-        </div>
+        {% if user_orders %}
+            <div>
+                {% for user_order in user_orders %}
+                <p>No: {{ forloop.counter }} - Order no:{{ user_order.id }}</p>
+                <a href="{% url 'order_history' user_order.id %}">Order Details</a>
+                <hr>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>You have no completed orders.</p>
+        {% endif %}
     </div>
 {% endblock content %}
