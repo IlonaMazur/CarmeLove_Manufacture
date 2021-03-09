@@ -1,57 +1,58 @@
 {% extends 'main.html' %}
 {% load static %}
 {% block content %}
+<div>
 
-<h1>cart</h1>
-    <div class="container">
-    <div class="row">
-      <div class="col">
-        <div class="card" style="width: 20rem;">
-  <img class="card-img-top" src="https://thumbnailer.mixcloud.com/unsafe/300x300/extaudio/3/e/d/2/672a-4cdd-4013-9579-cb177f082974.jpg" alt="Card image cap">
-  <div class="card-block">
-    <h4 class="card-title">Hard Caramel</h4>
-    <p class="card-text">Price: $0.5</p>
-    <a href="#" data-name="Hard Caramel" data-price="0.5" class="add-to-cart btn btn-primary">Add to cart</a>
-  </div>
-</div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 20rem;">
-  <img class="card-img-top" src="http://images2.memedroid.com/images/UPLOADED9/5091987be9bd4.jpeg" alt="Card image cap">
-  <div class="card-block">
-    <h4 class="card-title">The Ring of Gold</h4>
-    <p class="card-text">Price: $1.22</p>
-    <a href="#" data-name="The Ring of Gold" data-price="1.22" class="add-to-cart btn btn-primary">Add to cart</a>
-  </div>
-</div>
-      </div>
-      <div class="col">
-        <div class="card" style="width: 20rem;">
-  <img class="card-img-top" src="https://www.sharecopia.com/images/memes4/2020-candy-bar.jpg" alt="Card image cap">
-  <div class="card-block">
-    <h4 class="card-title">Twin wieners</h4>
-    <p class="card-text">Price: $5</p>
-    <a href="#" data-name="Twin wieners" data-price="5" class="add-to-cart btn btn-primary">Add to cart</a>
-  </div>
-</div>
+    <h1>cart</h1>
+        <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="card" style="width: 20rem;">
+      <img class="card-img-top" src="https://thumbnailer.mixcloud.com/unsafe/300x300/extaudio/3/e/d/2/672a-4cdd-4013-9579-cb177f082974.jpg" alt="Card image cap">
+      <div class="card-block">
+        <h4 class="card-title">Hard Caramel</h4>
+        <p class="card-text">Price: $0.5</p>
+        <a href="#" data-name="Hard Caramel" data-price="0.5" class="add-to-cart btn btn-primary">Add to cart</a>
       </div>
     </div>
-</div>
-    <div class="row">
-        {% for product in products %}
-        <div>
-            <img class="thumbnail" src="{{ product.imageURL }}" alt="">
-            <div class="box-element product">
-            <h6><strong>{{ product.name }}</strong></h6>
-            <hr>
-            <button data-product={{ product.id }} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-            <a class="btn btn-outline-success" href="#">View</a>
-                ${{ product.price|floatformat:2 }}
-                </div>
+          </div>
+          <div class="col">
+            <div class="card" style="width: 20rem;">
+      <img class="card-img-top" src="http://images2.memedroid.com/images/UPLOADED9/5091987be9bd4.jpeg" alt="Card image cap">
+      <div class="card-block">
+        <h4 class="card-title">The Ring of Gold</h4>
+        <p class="card-text">Price: $1.22</p>
+        <a href="#" data-name="The Ring of Gold" data-price="1.22" class="add-to-cart btn btn-primary">Add to cart</a>
+      </div>
+    </div>
+          </div>
+          <div class="col">
+            <div class="card" style="width: 20rem;">
+      <img class="card-img-top" src="https://www.sharecopia.com/images/memes4/2020-candy-bar.jpg" alt="Card image cap">
+      <div class="card-block">
+        <h4 class="card-title">Twin wieners</h4>
+        <p class="card-text">Price: $5</p>
+        <a href="#" data-name="Twin wieners" data-price="5" class="add-to-cart btn btn-primary">Add to cart</a>
+      </div>
+    </div>
+          </div>
         </div>
-    {% endfor %}
     </div>
-
+        <div class="row">
+            {% for product in products %}
+            <div>
+                <img class="thumbnail" src="{{ product.imageURL }}" alt="">
+                <div class="box-element product">
+                <h6><strong>{{ product.name }}</strong></h6>
+                <hr>
+                <button data-product={{ product.id }} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+                <a class="btn btn-outline-success" href="#">View</a>
+                    ${{ product.price|floatformat:2 }}
+                    </div>
+            </div>
+        {% endfor %}
+        </div>
+</div>
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
 

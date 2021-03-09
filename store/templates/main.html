@@ -8,6 +8,12 @@
 </head>
 <body>
     <div>
+        <strong><a href="{% url 'home' %}">HOME</a></strong>
+        <strong><a href="{% url 'store' %}">Store</a></strong>
+        <strong><a href="{% url 'cart' %}">Cart</a></strong>
+        <strong><a href="{% url 'checkout' %}">Checkout</a></strong>
+    </div>
+    <div>
         {% for category in categories %}
             <strong><a href="{% url 'category' category.id %}">{{ category.name }}</a></strong>
         {% endfor %}

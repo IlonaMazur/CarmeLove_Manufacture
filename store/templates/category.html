@@ -10,7 +10,8 @@
             <img src="{{ meta_product.imageURL }}">
             <div>
                 <strong>{{ meta_product.name }}</strong>
-                <p>category: {{ meta_product.category }}</p>
+<!--                What do you think about display category name one more time?-->
+<!--                <p>category: {{ meta_product.category }}</p>-->
                 <a href="{% url 'meta_product' meta_product.id %}">More...</a>
                 <hr>
             </div>
