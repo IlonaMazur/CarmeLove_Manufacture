@@ -204,3 +204,21 @@ def meta_product(request, meta_product_id):
 #     context = {'product': viewed_product, 'form': form, 'opinions': opinions, 'cart_items': cart_items}
 #     return render(request, 'product.html', context)
 
+def orders_history(request):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        user_orders = Order.objects.filter(customer=customer, complete=True)
+        context = {'customer': customer, 'user_orders': user_orders}
+        return render(request, 'orders_history.html', context)
+
+
+def order_history(request, user_order_id):
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        history_order = Order.objects.get(customer=customer, id=user_order_id)
+        history_items = history_order.get_orderitems
+
+        context = {'history_order': history_order, 'history_items': history_items}
+        return render(request, 'order_history.html', context)
+
+

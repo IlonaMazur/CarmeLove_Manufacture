@@ -80,6 +80,11 @@ class Product(Model):
         return self.meta_product.name
 
     @property
+    def name(self):
+        name = self.meta_product.name
+        return name
+
+    @property
     def availability(self):
         availability = self.meta_product.availability / self.package
         return availability
@@ -102,10 +107,19 @@ class Order(Model):
     customer = ForeignKey(Customer, on_delete=SET_NULL, null=True, blank=True)
     date_ordered = DateTimeField(auto_now_add=True)
     complete = BooleanField(default=False, null=True, blank=False)
-    transaction_id = CharField(max_length=100, null=True)
 
     def __str__(self):
         return str(self.id)
+
+    @property
+    def get_order_no(self):
+        order_no = self.id
+        return order_no
+
+    @property
+    def get_orderitems(self):
+        orderitems = self.orderitem_set.all()
+        return orderitems
 
     @property
     def shipping(self):
@@ -136,7 +150,13 @@ class OrderItem(Model):
     date_added = DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.id)
+        return self.product.name
+
+    @property
+    def get_history_items(self):
+        if self.order.complete is True:
+            m_history_items = self.order.orderitems_set.all()
+        return m_history_items
 
     @property
     def get_total(self):
@@ -166,7 +186,7 @@ class OrderComment(Model):
     comment = CharField(max_length=400, null=True, blank=True)
 
     def __str__(self):
-        return self.comment
+        return str(self.id)
 
 
 class ProductOpinion(Model):
