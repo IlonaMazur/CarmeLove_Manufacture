@@ -10,6 +10,8 @@
         <hr>
         <div>
             <p>Order no: {{ history_order }}</p>
+            <p>Date: {{ history_order.date_ordered.date }}</p>
+            <p>Time: {{ history_order.date_ordered.time }}</p>
             <hr>
             {% for history_item in history_items %}
                 <div><img src="{{ history_item.product.imageURL }}"></div>
