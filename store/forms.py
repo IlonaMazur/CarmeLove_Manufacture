@@ -1,7 +1,7 @@
 from django.forms import *
 
 
-from .models import ProductOpinion
+from .models import ProductOpinion, OrderComment
 
 
 class ProductOpinionForm(ModelForm):
@@ -14,3 +14,11 @@ class ProductOpinionForm(ModelForm):
     opinion = CharField(widget=Textarea(attrs={'placeholder': 'Opinion...'}), max_length=1500, required=False)
 
 
+class OrderCommentForm(ModelForm):
+    class Meta:
+        model = OrderComment
+        fields = ('comment',)
+
+    comment = CharField(widget=Textarea(attrs={'placeholder': 'Your comment for order...'}),
+                        max_length=400,
+                        required=False)

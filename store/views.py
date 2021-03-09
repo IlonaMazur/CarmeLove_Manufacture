@@ -6,8 +6,8 @@ from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.views.generic import CreateView
 
-from .models import Customer, Category, Product, Order, OrderItem, ProductOpinion, MetaProduct
-from .forms import ProductOpinionForm
+from .models import Customer, Category, Product, Order, OrderItem, ProductOpinion, MetaProduct, OrderComment
+from .forms import ProductOpinionForm, OrderCommentForm
 
 
 def home(request):
@@ -87,7 +87,22 @@ def checkout(request):
         items = []
         order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
         cart_items = order['get_cart_items']
-    context = {'items': items, 'order': order, 'cart_items': cart_items}
+        
+    form = OrderCommentForm()
+    if request.method == 'POST':
+        form = OrderCommentForm(request.POST)
+        if form.is_valid():
+            new_order_comment = form.save(commit=False)
+            new_order_comment.order = order
+            new_order_comment.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+    current_order = Order.objects.get(id=order.id)
+    order_comment = OrderComment.objects.filter(order=current_order)
+
+    context = {'items': items, 'order': order,
+               'cart_items': cart_items,
+               'form': form, 'order_comment': order_comment}
     return render(request, 'checkout.html', context)
 
 
