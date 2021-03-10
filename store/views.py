@@ -6,6 +6,8 @@ from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.views.generic import CreateView
 
+import json
+
 from .models import Customer, Category, Product, Order, OrderItem, ProductOpinion, MetaProduct, OrderComment
 from .forms import ProductOpinionForm, OrderCommentForm
 
@@ -107,6 +109,28 @@ def checkout(request):
 
 
 def update_item(request):
+    data = json.loads(request.body)
+    product_id = data['productId']   # productId
+    action = data['action']
+    print('Action:', action)
+    print('Product:', product_id)   # productId
+
+    customer = request.user.customer
+    product = Product.objects.get(id=product_id)
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+    order_item, created = OrderItem.objects.get_or_create(order=order, product=product)
+
+    if action == 'add':
+        order_item.quantity = (order_item.quantity + 1)
+    elif action == 'remove':
+        order_item.quantity = (order_item.quantity - 1)
+
+    order_item.save()
+
+    if order_item.quantity <= 0:
+        order_item.delete()
+
     return JsonResponse('Product was added', safe=False)
 
 
