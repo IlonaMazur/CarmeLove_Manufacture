@@ -217,3 +217,8 @@ class FavouriteProduct(Model):
 
     def __str__(self):
         return self.meta_product.name
+
+    @property
+    def name(self):
+        name = self.meta_product.name
+        return name

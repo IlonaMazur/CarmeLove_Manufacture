@@ -1,0 +1,17 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<div>
+
+    {% if user_favourites %}
+        <div>
+            {% for user_favourite in user_favourites %}
+                <p>{{ user_favourite.name }}</p>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have no favourite products!</p>
+    {% endif %}
+</div>
+
+{% endblock content %}
