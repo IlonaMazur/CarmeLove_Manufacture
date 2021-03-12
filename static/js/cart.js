@@ -29,7 +29,9 @@ $('.promo-code-cta').click(function() {
     }
   } else if (promoCode != '') {
     alert("Invalid Promo Code");
-    promoPrice = 0;
+    promoPrice = 0
+
+    ;
   }
   //If there is a promoPrice that has been set (it means there is a valid promoCode input) show promo
   if (promoPrice) {
