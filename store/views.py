@@ -13,7 +13,7 @@ from .models import Customer, Category, Product, Order, OrderItem,\
 from .forms import ProductOpinionForm, OrderCommentForm
 
 
-def home(request):
+def main(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -26,7 +26,7 @@ def home(request):
     categories = Category.objects.all()
     about = 'Hi! We are small Manufacture of Sweets!'
     context = {'categories': categories, 'cart_items': cart_items, 'about': about}
-    return render(request, 'home.html', context)
+    return render(request, 'main.html', context)
 
 
 def store(request):
